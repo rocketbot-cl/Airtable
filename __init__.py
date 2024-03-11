@@ -61,7 +61,10 @@ if not session:
 try:
     if module == "login":
         token = GetParams("token")
+        session = GetParams("session")
+        result = GetParams("result")
 
+        
 except Exception as e:
     import traceback
     traceback.print_exc()

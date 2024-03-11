@@ -48,23 +48,23 @@
           "css": "modal-lg",
           "inputs": [
             {
-              "type": "file_select",
+              "type": "input",
               "placeholder": {
-                "es": "C:/ruta/a/credenciales.json",
-                "en": "C:/path/to/credentials.json",
-                "pr": "C:/caminho/credenciais.json"
+                "es": "patSE7khj3MXjcByw.2a92ada817d7e3d9e9bbecd9555a0077e",
+                "en": "patSE7khj3MXjcByw.2a92ada817d7e3d9e9bbecd9555a0077e",
+                "pr": "patSE7khj3MXjcByw.2a92ada817d7e3d9e9bbecd9555a0077e"
               },
               "title": {
-                "es": "Ruta",
-                "en": "Path",
-                "pr": "Caminho"
+                "es": "Token de acceso personal",
+                "en": "Personal access token",
+                "pr": "Token de acesso pessoal"
               },
               "description": {
-                "es": "Ruta al archivo JSON",
-                "en": "Path to JSON file",
-                "pr": "Caminho para arquivo JSON"
+                "es": "Token creado en la seccion create/tokens de Airtable",
+                "en": "Token created in the create/tokens section of Airtable",
+                "pr": "Token criado na seção create/tokens do Airtable"
               },
-              "id": "credentials_path",
+              "id": "token",
               "css": "col-md-12"
             },
             {
