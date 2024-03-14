@@ -315,6 +315,26 @@
                 "id": "vista",
                 "css": "col-md-6"
               },
+              {
+                "type": "input",
+                "placeholder": {
+                  "es": "100",
+                  "en": "100",
+                  "pr": "100"
+                },
+                "title": {
+                  "es": "Número de Registros:",
+                  "en": "Number of Records:",
+                  "pr": "Número de registros:"
+                },
+                "description": {
+                  "es": "Número de Registros a traer por solicitud si se quieren 100 o menos de 100. No usar si se quieren traer todos los registros. Debe ingresar un número entero del 1 al 100",
+                  "en": "Number of Records to bring per request if you want 100 or less than 100. Do not use if you want to bring all the records. You must enter a whole number from 1 to 100",
+                  "pr": "Número de registros a serem trazidos por solicitação se quiser 100 ou menos que 100. Não use se quiser trazer todos os registros. Você deve inserir um número inteiro de 1 a 100"
+                },
+                "id": "limit",
+                "css": "col-md-6"
+              },
             {
               "type": "input",
               "placeholder": "session",

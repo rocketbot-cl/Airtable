@@ -74,51 +74,41 @@ class Airtable_:
         else:
             print('Error al obtener tablas:', response.status_code)
 
-    def listar_registros(self, base, table, vista, filtro=None):
+    def listar_registros(self, base, table, vista, filtro=None, limit=100, offset=None):
+
         params = {}
+        if limit:
+            params['pageSize'] = limit
         if filtro:
             params['filterByFormula'] = filtro
+        if offset:
+            params['offset'] = offset
+
 
         url = f'https://api.airtable.com/v0/{base}/{table}?view={vista}'
 
         records = []
-        response = self.session.get(url, params=params)
-        if response.status_code == 200:
-            data = response.json()
-            for record in data.get('records', []):
-                records.append(record.get('fields', {}))
-        else:
-            print('Error al obtener registros:', response.status_code)
+        
+        while True:
+            response = self.session.get(url, params=params)
+            if response.status_code == 200:
+                data = response.json()
+                # for record in data.get('records', []):
+                #     records.append(record.get('fields', {}))
+                records += [record.get('fields', {}) for record in data.get('records', [])]
+                next_offset = data.get('offset')
+                print(next_offset)
+                if next_offset:
+                    params['offset'] = next_offset
+                    # records += self.listar_registros(base, table, vista, filtro, limit, next_offset)
+                else:
+                    break
+            else:
+                error_message = data.get('error', {}).get('message')
+                print('Error al obtener registros:', response.status_code, error_message)
+                break
         return records
     
-    
-        # try:
-        #     fieldnames = set()
-        #     for registro in registros:
-        #         for field, value in registro.get('fields', {}).items():
-        #             if isinstance(value, dict):
-        #                 # Para campos anidados, creamos claves 'campo.subcampo'
-        #                 fieldnames.update([f"{field}.{subfield}" for subfield in value])
-        #             else:
-        #                 fieldnames.add(field)
-        #     with open(path, mode='w', newline='', encoding='utf-8') as csvfile:
-        #         writer = csv.DictWriter(csvfile, fieldnames=sorted(fieldnames))
-        #         writer.writeheader()
-            
-        #         for registro in registros:
-        #             row = {}
-        #             for field, value in registro.get('fields', {}).items():
-        #                 if isinstance(value, dict):
-        #                     # Para campos anidados, agregamos cada subcampo como 'campo.subcampo'
-        #                     for subfield, subvalue in value.items():
-        #                         row[f"{field}.{subfield}"] = subvalue
-        #                 else:
-        #                     row[field] = value
-        #             writer.writerow(row)
-        # except Exception as e:
-        #     print(f"Error al escribir el archivo CSV: {e}")
-
-
 """
     Obtengo el modulo que fue invocado
 """
@@ -181,11 +171,12 @@ try:
         result = GetParams("result")
         filter = GetParams("filter")
         vista = GetParams("vista")
+        limit = GetParams("limit")
 
         try:
             if not filter:
                 filter = None
-            registros = mod_air_session.listar_registros(base, tabla, vista, filter)
+            registros = mod_air_session.listar_registros(base, tabla, vista, filter, limit)
             
             SetVar(result, registros)
 
