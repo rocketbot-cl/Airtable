@@ -42,6 +42,7 @@ Obtenha registros de uma tabela
 |ID do Tabela|ID da tabela obtido a partir do comando listar tabelas|tbl9ULBsFxuSU8aLF|
 |Filtro|Fórmula de filtragem para obter os registros. Os campos estão entre colchetes. Para mais informações consulte a documentação https//support.airtable.com/docs/formula-field-reference|{Estado}='Todo'|
 |Vista|Visualização ocupada conforme escrito no aplicativo, os registros serão obtidos nessa ordem|Grid|
+|Número de registros|Número de registros a serem trazidos por solicitação se quiser 100 ou menos que 100. Não use se quiser trazer todos os registros. Você deve inserir um número inteiro de 1 a 100|100|
 |Session|ID da sessão (Opcional)|session|
 |Variável|Variável onde o resultado será salvo|res|
 

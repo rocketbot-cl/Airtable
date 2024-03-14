@@ -42,6 +42,7 @@ Get records from a table
 |Table ID|Table ID obtained from the list tables command|tbl9ULBsFxuSU8aLF|
 |Filter|Filtering formula to get the records. The fields are enclosed in braces. For more information check the documentation https//support.airtable.com/docs/formula-field-reference|{Status}='Todo'|
 |View|View that is used as it is written in the app, the records will be obtained in that order|Grid|
+|Number of Records|Number of Records to bring per request if you want 100 or less than 100. Do not use if you want to bring all the records. You must enter a whole number from 1 to 100|100|
 |Session|Session ID (Optional)|session|
 |Variable|Variable where the result will be saved|res|
 
