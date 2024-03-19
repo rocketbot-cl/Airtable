@@ -6,6 +6,22 @@
   
 Module to interact with Airtable, consult tables and download records  
 
+![banner](imgs/Banner-Airtable.jpg)
+
+## How to use this module
+To log in and keep your Airtable session active you need to create a Personal Access Token.
+1. From /create/tokens, click the “Create new token” button to create a new personal access token.
+
+2. Give your token a unique name. This name will be visible in record revision history.
+
+3. Choose the scopes to grant to your token. This controls what API endpoints the token will be able to use.
+
+4. Click ‘add a base’ to grant the token access to a base or workspace. You can grant access to any combination and number of bases and workspaces. You can also grant access to all workspaces and bases under your account. Keep in mind that the token will only be able to read and write data within the bases and workspaces that have been assigned to it.
+
+5. Once your token is created, we will only show it to you once, so we encourage you to copy it to your clipboard and store it somewhere safe. While you will be able to manage it in /create/tokens, the sensitive token itself is not stored for security purposes.
+
+If you are an enterprise admin, you can also create a personal access token for a service account from the Admin Panel—refer to this support article for details: https://support.airtable.com/docs/service-accounts-overview?_gl=1
+
 ## How to install this module
   
 To install the module in Rocketbot Studio, it can be done in two ways:

@@ -31,11 +31,10 @@ cur_path = os.path.join(base_path, 'modules', 'Airtable', 'libs')
 if cur_path not in sys.path:
         sys.path.append(cur_path)
 
-# from Airtable.libs.airtable_ import Airtable_
 import requests
 global csv
 import csv
-
+import json
 
 class Airtable_:
     def __init__(self, token):
@@ -57,7 +56,8 @@ class Airtable_:
                 res.append(base.get('id'))
             return res
         else:
-            print('Error al obtener los datos:', response.status_code)
+            error_message = response.get('error', {}).get('message')
+            print('Error al obtener los datos:', response.status_code, error_message)
     
     def listar_tablas(self, id):
         res = []
@@ -72,7 +72,8 @@ class Airtable_:
                 res.append(tabla['id'])
             return res
         else:
-            print('Error al obtener tablas:', response.status_code)
+            error_message = base.get('error', {}).get('message')
+            print('Error al obtener tablas:', response.status_code, error_message)
 
     def listar_registros(self, base, table, vista, filtro=None, limit=100, offset=None):
 
@@ -84,6 +85,36 @@ class Airtable_:
         if offset:
             params['offset'] = offset
 
+        url = f'https://api.airtable.com/v0/{base}/{table}?view={vista}'
+
+        records = []
+        
+        while True:
+            response = self.session.get(url, params=params)
+            if response.status_code == 200:
+                data = response.json()
+                records += [record.get('fields', {}) for record in data.get('records', [])]
+                next_offset = data.get('offset')
+                print(next_offset)
+                if next_offset:
+                    params['offset'] = next_offset
+                else:
+                    break
+            else:
+                error_message = data.get('error', {}).get('message')
+                print('Error al obtener registros:', response.status_code, error_message)
+                break
+        return records
+    
+    def data_registros(self, base, table, vista, filtro=None, limit=100, offset=None):
+
+        params = {}
+        if limit:
+            params['pageSize'] = limit
+        if filtro:
+            params['filterByFormula'] = filtro
+        if offset:
+            params['offset'] = offset
 
         url = f'https://api.airtable.com/v0/{base}/{table}?view={vista}'
 
@@ -93,14 +124,11 @@ class Airtable_:
             response = self.session.get(url, params=params)
             if response.status_code == 200:
                 data = response.json()
-                # for record in data.get('records', []):
-                #     records.append(record.get('fields', {}))
-                records += [record.get('fields', {}) for record in data.get('records', [])]
+                records += data.get('records', [])
                 next_offset = data.get('offset')
                 print(next_offset)
                 if next_offset:
                     params['offset'] = next_offset
-                    # records += self.listar_registros(base, table, vista, filtro, limit, next_offset)
                 else:
                     break
             else:
@@ -108,6 +136,22 @@ class Airtable_:
                 print('Error al obtener registros:', response.status_code, error_message)
                 break
         return records
+    
+    def update(self, base, table, record, fields):
+
+        url = f"https://api.airtable.com/v0/{base}/{table}/{record}"
+        # self.session.headers += {"Content-Type": "application/json"}
+        self.session.headers.update({"Content-Type": "application/json"})
+        data = {"fields": fields}
+
+        response = requests.patch(url, headers=self.session.headers, data=json.dumps(data))
+        if response.status_code == 200:
+            print("Registro actualizado con éxito.")
+            return response.json()
+        else:
+            print(f"Error al actualizar el registro: {response.status_code}")
+            return response.json()
+        
     
 """
     Obtengo el modulo que fue invocado
@@ -179,6 +223,49 @@ try:
             registros = mod_air_session.listar_registros(base, tabla, vista, filter, limit)
             
             SetVar(result, registros)
+
+        except Exception as e:
+            SetVar(result, False)
+            import traceback
+            traceback.print_exc()
+            PrintException()
+            raise e
+        
+    if module == "data_registros":
+        base = GetParams("base")
+        tabla = GetParams("tabla")
+        session = GetParams("session")
+        result = GetParams("result")
+        filter = GetParams("filter")
+        vista = GetParams("vista")
+        limit = GetParams("limit")
+
+        try:
+            if not filter:
+                filter = None
+            registros = mod_air_session.data_registros(base, tabla, vista, filter, limit)
+            SetVar(result, registros)
+
+        except Exception as e:
+            SetVar(result, False)
+            import traceback
+            traceback.print_exc()
+            PrintException()
+            raise e
+        
+    if module == "update":
+        base = GetParams("base")
+        tabla = GetParams("tabla")
+        record = GetParams("record")
+        fields = GetParams("fields")
+        # value = GetParams("value")
+        session = GetParams("session")
+        result = GetParams("result")
+
+        try:
+            fields = eval(fields)
+            res = mod_air_session.update(base, tabla, record, fields)
+            SetVar(result, res)
 
         except Exception as e:
             SetVar(result, False)

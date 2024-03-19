@@ -6,6 +6,23 @@
   
 Módulo para interactuar con Airtable, consultar tablas y descargar registros  
 
+![banner](imgs/Banner-Airtable.jpg)
+
+## Como usar este módulo
+
+Para loguearse y mantener su sesión activa de Airtable necesita crear un Token de Acceso Personal.
+1. Desde /create/tokens, haz clic en el botón "Crear nuevo token" para crear un nuevo token de acceso personal.
+
+2. Dale a tu token un nombre único. Este nombre será visible en el historial de revisión de registros.
+
+3. Elija los alcances para otorgar su token. Esto controla qué puntos finales de API podrá usar el token.
+
+4. Haga clic en "agregar una base" para otorgar acceso al token a una base o espacio de trabajo. Puede otorgar acceso a cualquier combinación y número de bases y espacios de trabajo. También puede otorgar acceso a todos los espacios de trabajo y bases de su cuenta. Tenga en cuenta que el token solo podrá leer y escribir datos dentro de las bases y espacios de trabajo que le hayan sido asignados.
+
+5. Una vez creado su token, solo se lo mostraremos una vez, por lo que le recomendamos que lo copie en su portapapeles y lo guarde en un lugar seguro. Si bien podrá administrarlo en /create/tokens, el token confidencial en sí no se almacena por motivos de seguridad.
+
+Si es administrador empresarial, también puede crear un token de acceso personal para una cuenta de servicio desde el Panel de administración; consulte este artículo de soporte para obtener más detalles: https://support.airtable.com/docs/service-accounts-overview?_gl=1
+
 ## Como instalar este módulo
   
 Para instalar el módulo en Rocketbot Studio, se puede hacer de dos formas:
